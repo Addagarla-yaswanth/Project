@@ -1,0 +1,20 @@
+[
+  {
+    "date": "2025-06-15",
+    "amount": 120.0,
+    "product": "Laptop",
+    "rewardPoints": 90
+  },
+  {
+    "date": "2025-07-05",
+    "amount": 75.0,
+    "product": "Headphones",
+    "rewardPoints": 25
+  },
+  {
+    "date": "2025-08-10",
+    "amount": 200.0,
+    "product": "Smartphone",
+    "rewardPoints": 250
+  }
+]
