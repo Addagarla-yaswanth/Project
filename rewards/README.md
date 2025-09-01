@@ -394,7 +394,6 @@ rewards
 ```bash
 mvn test
 ```
-
 Tests are available for Controllers and Service layers (Mockito + JUnit 5).
 
 
