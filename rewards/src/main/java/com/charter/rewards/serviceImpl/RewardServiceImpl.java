@@ -61,8 +61,8 @@ public class RewardServiceImpl implements RewardService {
         List<Transaction> transactions = transactionRepository.findByCustomerId(customerId);
 
         return transactions.stream().map(tx -> {
-            TransactionDTO dto = mapper.map(tx, TransactionDTO.class); // map basic fields
-            dto.setRewardPoints(calculatePoints(tx.getAmount())); // calculate points
+            TransactionDTO dto = mapper.map(tx, TransactionDTO.class);
+            dto.setRewardPoints(calculatePoints(tx.getAmount()));
             return dto;
         }).collect(Collectors.toList());
     }
@@ -84,9 +84,6 @@ public class RewardServiceImpl implements RewardService {
         return buildResponse(customer, transactions, RewardResponseDTO.class, startDate, endDate);
     }
 
-    /**
-     * Generic method to build both SummaryResponseDTO and RewardResponseDTO
-     */
     @SuppressWarnings("unchecked")
     private <T> T buildResponse(Customer customer, List<Transaction> transactions,
                                 Class<T> responseType,
@@ -94,7 +91,6 @@ public class RewardServiceImpl implements RewardService {
 
         Map<String, Integer> monthlyRewards = new HashMap<>();
         int totalRewards = 0;
-
         List<TransactionDTO> txDtos = new ArrayList<>();
 
         for (Transaction tx : transactions) {
@@ -109,42 +105,48 @@ public class RewardServiceImpl implements RewardService {
             txDtos.add(dto);
         }
 
+        Object response;
         if (responseType.equals(SummaryResponseDTO.class)) {
-            SummaryResponseDTO response = new SummaryResponseDTO();
-            response.setCustomerId(customer.getId());
-            response.setCustName(customer.getCustName());
-            response.setPhoneNo(customer.getPhoneNo());
-            response.setTransactions(txDtos);
-            response.setMonthlyRewards(monthlyRewards);
-            response.setTotalRewards(totalRewards);
-            return (T) response;
-        } 
-        else if (responseType.equals(RewardResponseDTO.class)) {
-            RewardResponseDTO response = new RewardResponseDTO();
-            response.setCustomerId(customer.getId());
-            response.setCustName(customer.getCustName());
-            response.setPhoneNo(customer.getPhoneNo());
-            response.setTransactions(txDtos);
-            response.setMonthlyRewards(monthlyRewards);
-            response.setTotalRewards(totalRewards);
-
-            if (startDate != null && endDate != null) {
-                Map<String, String> timeFrame = new HashMap<>();
-                timeFrame.put("startDate", startDate.toString());
-                timeFrame.put("endDate", endDate.toString());
-                response.setTimeFrame(timeFrame);
-            }
-            return (T) response;
+            response = new SummaryResponseDTO();
+        } else if (responseType.equals(RewardResponseDTO.class)) {
+            response = new RewardResponseDTO();
+        } else {
+            throw new IllegalArgumentException("Unsupported response type: " + responseType.getName());
         }
 
-        throw new IllegalArgumentException("Unsupported response type: " + responseType.getName());
+        // Set common fields for both DTOs
+        setCommonFields(response, customer, txDtos, monthlyRewards, totalRewards);
+
+        // Only for RewardResponseDTO, set time frame if provided
+        if (response instanceof RewardResponseDTO rewardResp && startDate != null && endDate != null) {
+            Map<String, String> timeFrame = new HashMap<>();
+            timeFrame.put("startDate", startDate.toString());
+            timeFrame.put("endDate", endDate.toString());
+            rewardResp.setTimeFrame(timeFrame);
+        }
+
+        return (T) response;
     }
 
-    // Reward calculation as per requirement
+    // Private helper to set common fields using reflection (works for both DTOs)
+    private void setCommonFields(Object response, Customer customer, List<TransactionDTO> txDtos,
+                                 Map<String, Integer> monthlyRewards, int totalRewards) {
+        try {
+            response.getClass().getMethod("setCustomerId", Long.class).invoke(response, customer.getId());
+            response.getClass().getMethod("setCustName", String.class).invoke(response, customer.getCustName());
+            response.getClass().getMethod("setPhoneNo", String.class).invoke(response, customer.getPhoneNo());
+            response.getClass().getMethod("setTransactions", List.class).invoke(response, txDtos);
+            response.getClass().getMethod("setMonthlyRewards", Map.class).invoke(response, monthlyRewards);
+            response.getClass().getMethod("setTotalRewards", int.class).invoke(response, totalRewards);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to set common fields on response DTO", e);
+        }
+    }
+
+    // Reward calculation
     private int calculatePoints(double amount) {
         if (amount <= 50) return 0;
         if (amount <= 100) return (int) (amount - 50);
         return (int) ((amount - 100) * 2 + 50);
     }
-
 }
