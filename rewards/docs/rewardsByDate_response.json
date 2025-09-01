@@ -1,1 +1,21 @@
-
+{
+  "customerId": 1,
+  "custName": "John Doe",
+  "phoneNo": "9876543210",
+  "monthlyRewards": {
+    "2025-08": 250
+  },
+  "totalRewards": 250,
+  "transactions": [
+    {
+      "date": "2025-08-10",
+      "amount": 200.0,
+      "product": "Smartphone",
+      "rewardPoints": 250
+    }
+  ],
+  "timeFrame": {
+    "startDate": "2025-08-01",
+    "endDate": "2025-08-31"
+  }
+}
