@@ -14,10 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.time.LocalDate;
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -305,4 +303,5 @@ class RewardServiceImplTest {
         assertEquals(1850, txList.get(0).getRewardPoints());
     }
 }
+
 
