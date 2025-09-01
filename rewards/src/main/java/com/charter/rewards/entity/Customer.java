@@ -16,4 +16,6 @@ public class Customer {
     private String phoneNo;
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions;
+    
 }
+
