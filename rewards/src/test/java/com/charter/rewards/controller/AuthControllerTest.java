@@ -5,6 +5,7 @@ import com.charter.rewards.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.junit.jupiter.api.DisplayName;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +33,7 @@ class AuthControllerTest {
 
     // ✅ Test 1: Successful Authentication
     @Test
+    @DisplayName("Should generate JWT token when valid username and password are provided")
     void testGenerateToken_Success() throws Exception {
         AuthController.AuthRequest request = new AuthController.AuthRequest();
         request.setCustName("Jack");
@@ -55,6 +57,7 @@ class AuthControllerTest {
 
     // ✅ Test 2: Invalid Username/Password
     @Test
+    @DisplayName("Should throw exception when invalid username or password is provided")
     void testGenerateToken_InvalidCredentials() {
         AuthController.AuthRequest request = new AuthController.AuthRequest();
         request.setCustName("Jack");
@@ -77,6 +80,7 @@ class AuthControllerTest {
 
     // ✅ Test 3: Unexpected Error from AuthenticationManager
     @Test
+    @DisplayName("Should propagate unexpected error from AuthenticationManager")
     void testGenerateToken_UnexpectedError() {
         AuthController.AuthRequest request = new AuthController.AuthRequest();
         request.setCustName("Jack");
@@ -95,3 +99,4 @@ class AuthControllerTest {
         verify(jwtUtil, never()).generateToken(anyString());
     }
 }
+
