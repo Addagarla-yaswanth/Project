@@ -16,4 +16,5 @@ public class RewardsApplication {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+    
 }
