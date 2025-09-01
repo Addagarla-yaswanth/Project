@@ -11,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -99,4 +98,5 @@ class AuthControllerTest {
         verify(jwtUtil, never()).generateToken(anyString());
     }
 }
+
 
