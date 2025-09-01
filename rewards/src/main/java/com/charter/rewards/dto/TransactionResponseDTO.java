@@ -9,4 +9,6 @@ public class TransactionResponseDTO {
     private String product;
     private Double amount;
     private LocalDate date;
+    
 }
+
