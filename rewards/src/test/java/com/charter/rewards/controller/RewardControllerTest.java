@@ -4,6 +4,7 @@ import com.charter.rewards.dto.*;
 import com.charter.rewards.service.RewardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,7 @@ class RewardControllerTest {
 
     // ---------------- POST /customers ----------------
     @Test
+    @DisplayName("Should create a new customer successfully")
     void testCreateCustomerSuccess() {
         when(rewardService.createCustomer(customerDTO)).thenReturn(customerResponseDTO);
 
@@ -83,6 +85,7 @@ class RewardControllerTest {
 
     // ---------------- GET /customers/{id}/transactions ----------------
     @Test
+    @DisplayName("Should return customer transactions successfully")
     void testGetCustomerTransactionsSuccess() {
         when(rewardService.getCustomerTransactions(1L)).thenReturn(Arrays.asList(txDto1, txDto2));
 
@@ -96,6 +99,7 @@ class RewardControllerTest {
     }
 
     @Test
+    @DisplayName("Should return empty list when customer has no transactions")
     void testGetCustomerTransactionsEmpty() {
         when(rewardService.getCustomerTransactions(1L)).thenReturn(Collections.emptyList());
 
@@ -108,6 +112,7 @@ class RewardControllerTest {
 
     // ---------------- GET /summary ----------------
     @Test
+    @DisplayName("Should return reward summary successfully")
     void testGetRewardSummarySuccess() {
         when(rewardService.getRewardSummary()).thenReturn(Collections.singletonList(summaryResponseDTO));
 
@@ -120,6 +125,7 @@ class RewardControllerTest {
     }
 
     @Test
+    @DisplayName("Should return empty list when no summary data available")
     void testGetRewardSummaryEmpty() {
         when(rewardService.getRewardSummary()).thenReturn(Collections.emptyList());
 
@@ -132,6 +138,7 @@ class RewardControllerTest {
 
     // ---------------- GET /customers/{id}/rewards ----------------
     @Test
+    @DisplayName("Should return rewards for customer successfully within timeframe")
     void testGetRewardsForCustomerSuccess() {
         LocalDate start = LocalDate.of(2025, 8, 1);
         LocalDate end = LocalDate.of(2025, 8, 31);
@@ -147,6 +154,7 @@ class RewardControllerTest {
     }
 
     @Test
+    @DisplayName("Should throw exception when no transactions found for customer in timeframe")
     void testGetRewardsForCustomerNoTransactions() {
         LocalDate start = LocalDate.of(2025, 8, 1);
         LocalDate end = LocalDate.of(2025, 8, 31);
@@ -163,6 +171,7 @@ class RewardControllerTest {
 
     // ---------------- Edge Cases ----------------
     @Test
+    @DisplayName("Should handle null list when fetching customer transactions")
     void testGetCustomerTransactionsNullList() {
         when(rewardService.getCustomerTransactions(1L)).thenReturn(null);
 
@@ -172,6 +181,7 @@ class RewardControllerTest {
     }
 
     @Test
+    @DisplayName("Should handle null list when fetching reward summary")
     void testGetRewardSummaryNullList() {
         when(rewardService.getRewardSummary()).thenReturn(null);
 
@@ -180,3 +190,4 @@ class RewardControllerTest {
         verify(rewardService, times(1)).getRewardSummary();
     }
 }
+
