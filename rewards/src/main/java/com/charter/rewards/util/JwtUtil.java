@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
-
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
@@ -65,4 +64,5 @@ public class JwtUtil {
         final String username = extractUsername(token);
         return (username.equals(custName) && !isTokenExpired(token));
     }
+
 }
