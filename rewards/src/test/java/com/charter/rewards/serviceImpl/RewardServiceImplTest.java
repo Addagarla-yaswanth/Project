@@ -7,6 +7,7 @@ import com.charter.rewards.repository.CustomerRepository;
 import com.charter.rewards.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.modelmapper.ModelMapper;
@@ -94,6 +95,7 @@ class RewardServiceImplTest {
 
     // ---------------- createCustomer Tests ----------------
     @Test
+    @DisplayName("Create Customer - Success")
     void testCreateCustomerSuccess() {
         when(mapper.map(customerDTO, Customer.class)).thenReturn(customer);
         when(customerRepository.save(customer)).thenReturn(customer);
@@ -106,6 +108,7 @@ class RewardServiceImplTest {
 
     // ---------------- getRewardSummary Tests ----------------
     @Test
+    @DisplayName("Get Reward Summary - With Transactions")
     void testGetRewardSummaryWithTransactions() {
         when(customerRepository.findAll()).thenReturn(Collections.singletonList(customer));
         when(transactionRepository.findByCustomerId(1L)).thenReturn(Arrays.asList(tx1, tx2));
@@ -120,6 +123,7 @@ class RewardServiceImplTest {
     }
 
     @Test
+    @DisplayName("Get Reward Summary - Empty Customer List")
     void testGetRewardSummaryEmptyCustomerList() {
         when(customerRepository.findAll()).thenReturn(Collections.emptyList());
         List<SummaryResponseDTO> summary = rewardService.getRewardSummary();
@@ -128,6 +132,7 @@ class RewardServiceImplTest {
 
     // ---------------- getCustomerTransactions Tests ----------------
     @Test
+    @DisplayName("Get Customer Transactions - Success")
     void testGetCustomerTransactionsSuccess() {
         when(transactionRepository.findByCustomerId(1L)).thenReturn(Arrays.asList(tx1, tx2));
 
@@ -138,6 +143,7 @@ class RewardServiceImplTest {
     }
 
     @Test
+    @DisplayName("Get Customer Transactions - Empty List")
     void testGetCustomerTransactionsEmpty() {
         when(transactionRepository.findByCustomerId(1L)).thenReturn(Collections.emptyList());
         List<TransactionDTO> txList = rewardService.getCustomerTransactions(1L);
@@ -146,6 +152,7 @@ class RewardServiceImplTest {
 
     // ---------------- getRewardsForCustomer Tests ----------------
     @Test
+    @DisplayName("Get Rewards For Customer - Success")
     void testGetRewardsForCustomerSuccess() {
         when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
         when(transactionRepository.findByCustomerIdAndDateBetween(eq(1L), any(), any()))
@@ -162,6 +169,7 @@ class RewardServiceImplTest {
     }
 
     @Test
+    @DisplayName("Get Rewards For Customer - No Transactions Found")
     void testGetRewardsForCustomerNoTransactions() {
         when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
         when(transactionRepository.findByCustomerIdAndDateBetween(eq(1L), any(), any()))
@@ -175,6 +183,7 @@ class RewardServiceImplTest {
     }
 
     @Test
+    @DisplayName("Get Rewards For Customer - Customer Not Found")
     void testGetRewardsForCustomerNotFound() {
         when(customerRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -193,6 +202,7 @@ class RewardServiceImplTest {
 
     // ---------------- Reward Points Edge Cases ----------------
     @Test
+    @DisplayName("Reward Points - Transaction Below $50")
     void testRewardPointsBelow50() {
         Transaction txLow = new Transaction();
         txLow.setAmount(20.0);
@@ -207,6 +217,7 @@ class RewardServiceImplTest {
     }
 
     @Test
+    @DisplayName("Reward Points - Transaction Between $50 and $100")
     void testRewardPointsBetween50And100() {
         Transaction txMid = new Transaction();
         txMid.setAmount(75.0);
@@ -221,6 +232,7 @@ class RewardServiceImplTest {
     }
 
     @Test
+    @DisplayName("Reward Points - Transaction Above $100")
     void testRewardPointsAbove100() {
         Transaction txHigh = new Transaction();
         txHigh.setAmount(150.0);
@@ -235,6 +247,7 @@ class RewardServiceImplTest {
     }
 
     @Test
+    @DisplayName("Reward Points - Transactions Exactly $50 and $100")
     void testRewardPointsExactly50And100() {
         Transaction tx50 = new Transaction();
         tx50.setAmount(50.0);
@@ -256,6 +269,7 @@ class RewardServiceImplTest {
     }
 
     @Test
+    @DisplayName("Reward Points - Zero and Negative Transaction Amounts")
     void testRewardPointsZeroAndNegative() {
         Transaction txZero = new Transaction();
         txZero.setAmount(0.0);
@@ -277,6 +291,7 @@ class RewardServiceImplTest {
     }
 
     @Test
+    @DisplayName("Reward Points - Very Large Transaction Amount")
     void testRewardPointsLargeAmount() {
         Transaction txLarge = new Transaction();
         txLarge.setAmount(1000.0);
@@ -290,3 +305,4 @@ class RewardServiceImplTest {
         assertEquals(1850, txList.get(0).getRewardPoints());
     }
 }
+
