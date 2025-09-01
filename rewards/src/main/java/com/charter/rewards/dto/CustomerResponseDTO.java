@@ -9,4 +9,6 @@ public class CustomerResponseDTO {
     private String custName;
     private String phoneNo;
     private List<TransactionResponseDTO> transactions;
+    
 }
+
