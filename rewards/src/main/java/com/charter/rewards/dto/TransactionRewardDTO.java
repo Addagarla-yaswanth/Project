@@ -3,6 +3,7 @@ package com.charter.rewards.dto;
 import java.time.LocalDate;
 
 import lombok.Data;
+
 @Data
 public class TransactionRewardDTO {
     private Long transactionId;
@@ -11,3 +12,4 @@ public class TransactionRewardDTO {
     private Double amount;
     private Integer rewardPoints;
 }
+
