@@ -5,7 +5,6 @@ import com.charter.rewards.dto.CustomerResponseDTO;
 import com.charter.rewards.dto.RewardResponseDTO;
 import com.charter.rewards.dto.SummaryResponseDTO;
 import com.charter.rewards.dto.TransactionDTO;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,3 +15,4 @@ public interface RewardService {
     RewardResponseDTO getRewardsForCustomer(Long customerId, LocalDate startDate, LocalDate endDate);
 	List<TransactionDTO> getCustomerTransactions(Long customerId);
 }
+
