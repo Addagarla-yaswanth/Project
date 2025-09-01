@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.*;
@@ -147,4 +146,5 @@ public class RewardServiceImpl implements RewardService {
         if (amount <= 100) return (int) (amount - 50);
         return (int) ((amount - 100) * 2 + 50);
     }
+
 }
