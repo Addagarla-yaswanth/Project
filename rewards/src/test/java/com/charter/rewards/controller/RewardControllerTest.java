@@ -9,10 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.time.LocalDate;
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -190,4 +188,5 @@ class RewardControllerTest {
         verify(rewardService, times(1)).getRewardSummary();
     }
 }
+
 
